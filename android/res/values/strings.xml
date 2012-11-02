@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Creatures</string>
+    <string name="creature_insert_success">Creature ADDED!!</string>
+    <string name="creature_insert_failure">Shit! Failed to add creature!</string>
+</resources>
