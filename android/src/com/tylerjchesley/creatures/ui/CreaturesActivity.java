@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -31,6 +32,8 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
 
     private ViewPager mPager;
 
+    private PagerTitleStrip mTitles;
+
 //------------------------------------------
 //  Overridden Methods
 //------------------------------------------
@@ -41,6 +44,7 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
         setContentView(R.layout.activity_creatures);
 
         mProgress = findViewById(R.id.progress);
+        mTitles = (PagerTitleStrip) findViewById(R.id.titles);
         mPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new CreaturesPagerAdapter(getFragmentManager());
         mPager.setAdapter(mAdapter);
@@ -63,6 +67,7 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
     @Override
     public void onLoadFinished(Loader<List<Creature>> listLoader, List<Creature> creatures) {
         mAdapter.setCreatures(creatures);
+        mTitles.requestLayout();
         mProgress.startAnimation(AnimationUtils.loadAnimation(
                 this, android.R.anim.fade_out));
         mPager.startAnimation(AnimationUtils.loadAnimation(
@@ -91,6 +96,11 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
         public void setCreatures(List<Creature> creatures) {
             mCreatures = creatures;
             notifyDataSetChanged();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mCreatures != null ? mCreatures.get(position).getTitle() : null;
         }
 
         @Override
