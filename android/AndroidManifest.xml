@@ -27,7 +27,7 @@
 
         <activity
                 android:name=".ui.EditCreatureActivity"
-                android:label="@string/add_creature_title">
+                android:label="@string/add_creature">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

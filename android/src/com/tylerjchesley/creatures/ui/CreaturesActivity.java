@@ -1,6 +1,7 @@
 package com.tylerjchesley.creatures.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import com.tylerjchesley.creatures.R;
@@ -50,6 +53,24 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_creatures, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new:
+                onNewSelected();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onAuthToken() {
 
     }
@@ -57,6 +78,11 @@ public class CreaturesActivity extends CreaturesAuthActivity implements
 //------------------------------------------
 //  Methods
 //------------------------------------------
+
+    private void onNewSelected() {
+        final Intent intent = new Intent(Intent.ACTION_INSERT, Creatures.CONTENT_URI);
+        startActivity(intent);
+    }
 
     /**---- LoaderManager.LoaderCallbacks ----**/
 
