@@ -2,7 +2,10 @@ package com.tylerjchesley.creatures.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -16,9 +19,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.google.api.services.fusiontables.Fusiontables;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
+import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
 import com.tylerjchesley.creatures.util.ImageFetcher;
 import com.tylerjchesley.creatures.util.UIUtils;
 import org.jsoup.Connection;
@@ -140,8 +143,20 @@ public class EditCreatureActivity extends CreaturesAuthActivity {
     }
 
     private void onAcceptSelected() {
-        final InsertCreatureTask task = new InsertCreatureTask();
-        task.execute(mCreature);
+        if (isValid()) {
+            final CreatureQueryHandler handler = new CreatureQueryHandler(getContentResolver());
+            handler.startInsert(0, null, Creatures.CONTENT_URI, mCreature.toValues());
+        }
+    }
+
+    private boolean isValid() {
+        return true;
+    }
+
+    private void onCreatureSaved() {
+        Toast.makeText(EditCreatureActivity.this,
+                R.string.creature_save_success, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /**---- CreaturesAuthActivity ----**/
@@ -164,34 +179,6 @@ public class EditCreatureActivity extends CreaturesAuthActivity {
 //------------------------------------------
 //  Inner Classes
 //------------------------------------------
-
-    private final class InsertCreatureTask extends AsyncTask<Creature, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Creature... creatures) {
-            final Fusiontables client = getClient();
-            try {
-                for (Creature creature : creatures) {
-                    creature.insert(client);
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            Toast.makeText(EditCreatureActivity.this,
-                    success ? R.string.creature_insert_success :
-                            R.string.creature_insert_failure, Toast.LENGTH_SHORT).show();
-            if (success) {
-                finish();
-            }
-        }
-
-    }
 
     private final class ScrapePageTask extends AsyncTask<String, Void, Boolean> {
 
@@ -269,6 +256,24 @@ public class EditCreatureActivity extends CreaturesAuthActivity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return ProgressDialog.show(getActivity(), null,
                     getString(R.string.creature_insert_progress_message), true, false);
+        }
+
+    }
+
+    final class CreatureQueryHandler extends AsyncQueryHandler {
+
+        public CreatureQueryHandler(ContentResolver cr) {
+            super(cr);
+        }
+
+        @Override
+        protected void onUpdateComplete(int token, Object cookie, int result) {
+            onCreatureSaved();
+        }
+
+        @Override
+        protected void onInsertComplete(int token, Object cookie, Uri uri) {
+            onCreatureSaved();
         }
 
     }

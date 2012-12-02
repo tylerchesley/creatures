@@ -8,9 +8,9 @@ import android.provider.BaseColumns;
  */
 public class CreaturesContract {
 
-    public static final String CONTENT_AUTHORITY = "com.jalehafshar.creatures";
+    public static final String CONTENT_AUTHORITY = "com.tylerjchesley.creatures";
 
-    public static final Uri BASE_CONTENT_URI = Uri.parse(CONTENT_AUTHORITY);
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static interface CreaturesColumns {
 

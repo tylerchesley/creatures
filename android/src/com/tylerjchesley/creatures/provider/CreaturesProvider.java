@@ -106,9 +106,9 @@ public class CreaturesProvider extends ContentProvider {
         final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
         switch (match) {
             case CREATURES: {
-                database.insertOrThrow(Creatures.PATH, null, values);
+                final long id = database.insertOrThrow(Creatures.PATH, null, values);
                 getContext().getContentResolver().notifyChange(uri, null, true);
-                return Creatures.buildCreatureUri(values.getAsLong(Creatures.CREATURE_ID));
+                return Creatures.buildCreatureUri(id);
             }
         }
         return null;

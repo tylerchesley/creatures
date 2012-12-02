@@ -1,7 +1,7 @@
 package com.tylerjchesley.creatures.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +20,9 @@ public class CreatureFragment extends Fragment {
 //  Static Methods
 //------------------------------------------
 
-    public static CreatureFragment newInstance(Creature creature) {
+    public static CreatureFragment newInstance(Bundle creature) {
         final CreatureFragment fragment = new CreatureFragment();
-        fragment.setArguments(creature.toArguments());
+        fragment.setArguments(creature);
         return fragment;
     }
 
@@ -44,8 +44,8 @@ public class CreatureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUrl = getArguments().getString(Creature.URL_COLUMN);
-        mTitle = getArguments().getString(Creature.TITLE_COLUMN);
+        mUrl = getArguments().getString(Creature.URL);
+        mTitle = getArguments().getString(Creature.TITLE);
 
         setRetainInstance(true);
         setHasOptionsMenu(true);

@@ -44,7 +44,7 @@ public class CreaturesDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE " + Tables.CREATURES + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + CreaturesColumns.CREATURE_ID + " TEXT NOT NULL,"
+                + CreaturesColumns.CREATURE_ID + " TEXT,"
                 + CreaturesColumns.TITLE + " TEXT NOT NULL,"
                 + CreaturesColumns.URL + " TEXT NOT NULL,"
                 + CreaturesColumns.IMAGE + " TEXT NOT NULL,"

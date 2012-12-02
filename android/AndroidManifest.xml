@@ -33,11 +33,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.creatures.creature" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.creatures.creature" />
+            </intent-filter>
         </activity>
 
         <provider
                 android:name=".provider.CreaturesProvider"
-                android:authorities="com.jalehafshar.creatures"
+                android:authorities="com.tylerjchesley.creatures"
                 android:syncable="true"
                 android:label="@string/app_name" />
 

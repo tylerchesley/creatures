@@ -13,7 +13,7 @@
     <string name="creature_title">Title</string>
     <string name="creature_url">Url</string>
     <string name="creature_image_description">Create Image</string>
-    <string name="creature_insert_success">Creature added!!</string>
+    <string name="creature_save_success">Creature saved!!</string>
     <string name="creature_insert_failure">Unable to add creature</string>
     <string name="creature_insert_progress_message">Adding creature&#8230;</string>
     <string name="creature_finding_image_progress_message">Finding image&#8230;</string>
