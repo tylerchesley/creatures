@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.google.api.client.extensions.android2.AndroidHttp;
 import com.google.api.client.googleapis.GoogleHeaders;
@@ -22,7 +23,7 @@ import java.io.IOException;
 /**
  * Author: Tyler Chesley
  */
-public abstract class CreaturesAuthActivity extends Activity {
+public abstract class CreaturesAuthActivity extends FragmentActivity {
 
 //------------------------------------------
 //  Constants

@@ -52,9 +52,15 @@ public class Creature {
 
     private String mUrl;
 
+    private String mImage;
+
 //------------------------------------------
 //  Constructor
 //------------------------------------------
+
+    public Creature() {
+
+    }
 
     public Creature(String title, String url) {
         mTitle = title;
@@ -81,6 +87,14 @@ public class Creature {
         mUrl = url;
     }
 
+    public String getImage() {
+        return mImage;
+    }
+
+    public void setImage(String image) {
+        mImage = image;
+    }
+
 //------------------------------------------
 //  Methods
 //------------------------------------------
@@ -99,7 +113,7 @@ public class Creature {
                 + IMAGE_COLUMN + ") VALUES ('"
                 + mTitle + "', '"
                 + mUrl + "', '"
-                + mUrl + "')").execute();
+                + mImage + "')").execute();
     }
 
 }

@@ -7,6 +7,7 @@
 
     <uses-sdk android:minSdkVersion="13"/>
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,8 +26,8 @@
         </activity>
 
         <activity
-                android:name=".ui.AddCreatureActivity"
-                android:label="@string/app_name">
+                android:name=".ui.EditCreatureActivity"
+                android:label="@string/add_creature_title">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

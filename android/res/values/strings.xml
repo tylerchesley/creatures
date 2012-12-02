@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Creatures</string>
+
     <string name="creatures_loading_progress_message">Loading creatures&#8230;</string>
-    <string name="creature_insert_progress_message">Adding creature&#8230;</string>
-    <string name="creature_insert_success">Creature ADDED!!</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+
+    <!-- Add Creature -->
+
+    <string name="add_creature_title">Add Creature</string>
+    <string name="creature_title">Title</string>
+    <string name="creature_url">Url</string>
+    <string name="creature_image_description">Create Image</string>
+    <string name="creature_insert_success">Creature added!!</string>
     <string name="creature_insert_failure">Unable to add creature</string>
+    <string name="creature_insert_progress_message">Adding creature&#8230;</string>
+    <string name="creature_finding_image_progress_message">Finding image&#8230;</string>
+
 </resources>
