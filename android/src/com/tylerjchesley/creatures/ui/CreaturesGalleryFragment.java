@@ -197,7 +197,7 @@ public class CreaturesGalleryFragment extends ContentFragment implements
         }
 
         return new CursorLoader(getActivity(), Creatures.CONTENT_URI,
-                Creature.CONTENT_PROJECTION, selection, null, null);
+                Creature.CONTENT_PROJECTION, selection, null, Creatures.CREATED_AT + " DESC");
     }
 
     @Override

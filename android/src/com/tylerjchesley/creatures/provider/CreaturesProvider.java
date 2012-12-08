@@ -82,7 +82,9 @@ public class CreaturesProvider extends ContentProvider {
         LOGV(TAG, "query(uri=" + uri + ", proj=" + Arrays.toString(projection) + ")");
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         final SelectionBuilder builder = buildSimpleSelection(uri);
-        return builder.where(selection, selectionArgs).query(db, projection, order);
+        final Cursor cursor = builder.where(selection, selectionArgs).query(db, projection, order);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 
     @Override

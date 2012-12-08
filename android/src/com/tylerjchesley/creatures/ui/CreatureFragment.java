@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -22,7 +23,7 @@ import xxx.tylerchesley.android.util.UIUtils;
 /**
  * Author: Tyler Chesley
  */
-public class CreatureFragment extends ContentFragment {
+public class CreatureFragment extends SherlockFragment {
 
 //------------------------------------------
 //  Variables
@@ -64,10 +65,18 @@ public class CreatureFragment extends ContentFragment {
     }
 
     @Override
-    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mImage = new ImageView(getActivity());
-        mImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        return mImage;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_creature, container, false);
+        mImage = (ImageView) view.findViewById(R.id.image);
+        return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mImageFetcher != null) {
+            mImageFetcher.closeCache();
+        }
     }
 
     @Override
