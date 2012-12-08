@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.api.client.extensions.android2.AndroidHttp;
 import com.google.api.client.googleapis.GoogleHeaders;
 import com.google.api.client.googleapis.extensions.android2.auth.GoogleAccountManager;
@@ -23,7 +25,7 @@ import java.io.IOException;
 /**
  * Author: Tyler Chesley
  */
-public abstract class CreaturesAuthActivity extends FragmentActivity {
+public abstract class CreaturesAuthActivity extends SherlockFragmentActivity {
 
 //------------------------------------------
 //  Constants

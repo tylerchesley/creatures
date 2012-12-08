@@ -8,11 +8,11 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import com.tylerjchesley.creatures.util.SelectionBuilder;
+import xxx.tylerchesley.android.util.SelectionBuilder;
 
 import java.util.Arrays;
 
-import static com.tylerjchesley.creatures.util.LogUtils.LOGV;
+import static xxx.tylerchesley.android.util.LogUtils.LOGV;
 
 /**
  * Author: Tyler Chesley

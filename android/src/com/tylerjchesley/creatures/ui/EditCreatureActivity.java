@@ -13,17 +13,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
-import com.tylerjchesley.creatures.util.ImageFetcher;
-import com.tylerjchesley.creatures.util.UIUtils;
+import xxx.tylerchesley.android.util.ImageFetcher;
+import xxx.tylerchesley.android.util.UIUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -130,7 +130,7 @@ public class EditCreatureActivity extends CreaturesAuthActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_creature, menu);
+        getSupportMenuInflater().inflate(R.menu.menu_edit_creature, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
