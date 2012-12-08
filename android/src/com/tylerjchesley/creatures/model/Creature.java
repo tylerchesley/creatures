@@ -66,9 +66,20 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         return args;
     }
 
+    public static Creature restoreCreature(Bundle arguments) {
+        final Creature creature = new Creature();
+        creature.mId = arguments.getLong(_ID);
+        creature.mTitle = arguments.getString(TITLE);
+        creature.mUrl = arguments.getString(URL);
+        creature.mImage = arguments.getString(IMAGE);
+        return creature;
+    }
+
 //------------------------------------------
 //  Variables
 //------------------------------------------
+
+    private long mId;
 
     private String mTitle;
 
@@ -92,6 +103,14 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 //------------------------------------------
 //  Methods:Properties
 //------------------------------------------
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(long id) {
+        mId = id;
+    }
 
     public String getTitle() {
         return mTitle;

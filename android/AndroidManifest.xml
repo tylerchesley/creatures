@@ -26,7 +26,8 @@
         </activity>
 
         <activity
-                android:name=".ui.CreatureActivity">
+                android:name=".ui.CreatureActivity"
+                android:uiOptions="splitActionBarWhenNarrow">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

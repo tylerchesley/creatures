@@ -63,7 +63,7 @@ public class CreaturesProvider extends ContentProvider {
                 break;
             case CREATURES_ID:
                 final String creatureId = Creatures.getCreatureId(uri);
-                builder.table(Creatures.PATH).where(Creatures.CREATURE_ID + " = " + creatureId);
+                builder.table(Creatures.PATH).where(Creatures._ID + " = " + creatureId);
                 break;
         }
         return builder;

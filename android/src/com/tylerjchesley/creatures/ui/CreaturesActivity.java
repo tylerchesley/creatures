@@ -35,5 +35,4 @@ public class CreaturesActivity extends SinglePaneActivity implements
         startActivity(intent);
     }
 
-
 }

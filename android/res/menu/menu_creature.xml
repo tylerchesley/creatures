@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/menu_favorite"
+            android:icon="@drawable/ic_action_favorit"
+            android:title="@string/description_favorite"
+            android:showAsAction="always" />
+
+    <item
+            android:id="@+id/menu_share"
+            android:icon="@drawable/ic_action_share"
+            android:title="@string/description_share"
+            android:showAsAction="always" />
+
+    <item
+            android:id="@+id/menu_website"
+            android:icon="@drawable/ic_action_website"
+            android:title="@string/description_website"
+            android:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/menu_edit"
+            android:icon="@drawable/ic_action_edit"
+            android:title="@string/description_edit"
+            android:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/menu_delete"
+            android:icon="@drawable/ic_action_discard"
+            android:title="@string/description_delete"
+            android:showAsAction="ifRoom" />
+
+</menu>
