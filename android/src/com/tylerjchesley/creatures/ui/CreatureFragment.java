@@ -36,8 +36,6 @@ public class CreatureFragment extends ContentFragment {
 
     private MenuItem mFavoriteMenuItem;
 
-    private boolean mFavorited = false;
-
 //------------------------------------------
 //  Overridden Methods
 //------------------------------------------
@@ -47,6 +45,8 @@ public class CreatureFragment extends ContentFragment {
         super.onCreate(savedInstanceState);
 
         mCreature = Creature.restoreCreature(getArguments());
+
+        CreaturesHelper.setCreateIsNew(getActivity(), mCreature.getId(), false);
 
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mImageFetcher.setImageFadeIn(true);
@@ -74,7 +74,7 @@ public class CreatureFragment extends ContentFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_creature, menu);
         mFavoriteMenuItem = menu.findItem(R.id.menu_favorite);
-        showFavorited(mFavorited);
+        showFavorited(mCreature.isFavorite());
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -117,7 +117,7 @@ public class CreatureFragment extends ContentFragment {
         mFavoriteMenuItem.setIcon(favorited
                 ? R.drawable.ic_action_unfavorite
                 : R.drawable.ic_action_favorit);
-        mFavorited = favorited;
+        mCreature.setIsFavorite(favorited);
     }
 
     private void onShareSelected() {
@@ -125,12 +125,12 @@ public class CreatureFragment extends ContentFragment {
     }
 
     private void onFavoriteSelected() {
-        final boolean favorited = !mFavorited;
+        final boolean favorited = !mCreature.isFavorite();
         showFavorited(favorited);
         Toast.makeText(getActivity(), favorited ?
                 R.string.toast_favorited : R.string.toast_unfavorited,
                 Toast.LENGTH_SHORT).show();
-        // TODO: save favorited
+        CreaturesHelper.setCreatureFavorited(getActivity(), mCreature.getId(), favorited);
     }
 
     private void onWebsiteSelected() {

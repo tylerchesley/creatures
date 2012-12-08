@@ -48,11 +48,15 @@ public class CreaturesDatabase extends SQLiteOpenHelper {
                 + CreaturesColumns.TITLE + " TEXT NOT NULL,"
                 + CreaturesColumns.URL + " TEXT NOT NULL,"
                 + CreaturesColumns.IMAGE + " TEXT NOT NULL,"
+                + CreaturesColumns.IS_FAVORITE + " INTEGER NOT NULL DEFAULT 0,"
+                + CreaturesColumns.IS_NEW + " INTEGER NOT NULL DEFAULT 1,"
+                + CreaturesColumns.CREATED_AT + " INTEGER NOT NULL,"
                 + "UNIQUE (" + CreaturesColumns.CREATURE_ID + ") ON CONFLICT REPLACE)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int i, int i1) {
+
     }
 
 }

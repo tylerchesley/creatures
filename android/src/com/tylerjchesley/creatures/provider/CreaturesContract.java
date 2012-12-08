@@ -22,6 +22,12 @@ public class CreaturesContract {
 
         public static final String IMAGE = "image";
 
+        public static final String IS_FAVORITE = "is_favorite";
+
+        public static final String IS_NEW = "is_new";
+
+        public static final String CREATED_AT = "created_at";
+
     }
 
     public static final class Creatures implements CreaturesColumns, BaseColumns {

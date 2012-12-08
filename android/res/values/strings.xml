@@ -9,6 +9,16 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
 
+    <!-- Creatures -->
+
+    <string-array name="creatures_filter_options">
+        <item>All Creatures</item>
+        <item>New Creatures</item>
+        <item>Favorite Creatures</item>
+    </string-array>
+
+    <string name="creatures_empty_message">No creatures</string>
+
     <!-- Creature -->
 
     <string name="description_share">Share</string>

@@ -47,7 +47,8 @@ public class CreaturesHelper {
                 activity.finish();
             }
         };
-        handler.startDelete(0, null, Creatures.buildCreatureUri(creatureId), null, null);
+        handler.startDelete(0, null, Creatures.CONTENT_URI, Creatures._ID + " = ?",
+                new String[] {String.valueOf(creatureId)});
     }
 
     public static Intent createShareIntent(Activity activity, String title, String url) {
@@ -62,6 +63,20 @@ public class CreaturesHelper {
         activity.startActivity(Intent.createChooser(
                 createShareIntent(activity, title, url),
                 activity.getString(R.string.title_share)));
+    }
+
+    public static void setCreatureFavorited(Context context, long creatureId, boolean favorited) {
+        final ContentValues values = new ContentValues();
+        values.put(Creature.IS_FAVORITE, favorited);
+        final AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};
+        handler.startUpdate(0, null, Creatures.buildCreatureUri(creatureId), values, null, null);
+    }
+
+    public static void setCreateIsNew(Context context, long creatureId, boolean isNew) {
+        final ContentValues values = new ContentValues();
+        values.put(Creature.IS_NEW, isNew);
+        final AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};
+        handler.startUpdate(0, null, Creatures.buildCreatureUri(creatureId), values, null, null);
     }
 
 //------------------------------------------

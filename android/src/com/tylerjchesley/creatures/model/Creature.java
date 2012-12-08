@@ -27,7 +27,10 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
             _ID,
             TITLE,
             URL,
-            IMAGE
+            IMAGE,
+            IS_NEW,
+            IS_FAVORITE,
+            CREATED_AT
     };
 
     public static final int _ID_INDEX = 0;
@@ -37,6 +40,10 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
     public static final int URL_INDEX = 2;
 
     public static final int IMAGE_INDEX = 3;
+
+    public static final int IS_NEW_INDEX = 4;
+
+    public static final int IS_FAVORITE_INDEX = 5;
 
 //------------------------------------------
 //  Static Methods
@@ -63,6 +70,8 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         args.putString(TITLE, cursor.getString(TITLE_INDEX));
         args.putString(URL, cursor.getString(URL_INDEX));
         args.putString(IMAGE, cursor.getString(IMAGE_INDEX));
+        args.putBoolean(IS_NEW, cursor.getInt(IS_NEW_INDEX) == 1);
+        args.putBoolean(IS_FAVORITE, cursor.getInt(IS_FAVORITE_INDEX) == 1);
         return args;
     }
 
@@ -72,6 +81,8 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         creature.mTitle = arguments.getString(TITLE);
         creature.mUrl = arguments.getString(URL);
         creature.mImage = arguments.getString(IMAGE);
+        creature.mIsNew = arguments.getBoolean(IS_NEW);
+        creature.mIsFavorite = arguments.getBoolean(IS_FAVORITE);
         return creature;
     }
 
@@ -86,6 +97,12 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
     private String mUrl;
 
     private String mImage;
+
+    private boolean mIsNew;
+
+    private boolean mIsFavorite;
+
+    private long mCreatedAt;
 
 //------------------------------------------
 //  Constructor
@@ -136,6 +153,22 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         mImage = image;
     }
 
+    public boolean isNew() {
+        return mIsNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        mIsNew = isNew;
+    }
+
+    public boolean isFavorite() {
+        return mIsFavorite;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+        mIsFavorite = isFavorite;
+    }
+
 //------------------------------------------
 //  Methods
 //------------------------------------------
@@ -153,6 +186,7 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         values.put(TITLE, mTitle);
         values.put(URL, mUrl);
         values.put(IMAGE, mImage);
+        values.put(CREATED_AT, System.currentTimeMillis());
         return values;
     }
 
