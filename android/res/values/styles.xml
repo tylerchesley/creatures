@@ -12,11 +12,19 @@
         <!--<item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>-->
     </style>
 
+    <style name="FrameworkRoot.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TitleText" parent="TextAppearance.Sherlock.Widget.ActionBar.Title.Inverse" />
+
     <style name="Theme.Base" parent="FrameworkRoot.Theme">
     </style>
 
     <!-- Base themes for the app -->
     <style name="Theme.Creatures" parent="Theme.Base">
+        <item name="android:windowBackground">@color/background_grey</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="windowContentOverlay">@drawable/actionbar_shadow</item>
     </style>
 
     <style name="FormTitle" parent="android:style/TextAppearance.Medium">
@@ -29,6 +37,18 @@
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">8dip</item>
+    </style>
+
+    <!-- Action bar -->
+    <style name="ActionBar" parent="FrameworkRoot.ActionBar">
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleText</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="FrameworkRoot.ActionBar.TitleText">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

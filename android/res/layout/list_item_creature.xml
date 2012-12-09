@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/creature_image_background"
+        android:background="@drawable/creature_list_item_border"
+        android:padding="2dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -12,4 +13,29 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
-</FrameLayout>
+    <ImageView
+            android:id="@+id/is_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:src="@drawable/creature_favorite_indicator" />
+
+    <ImageView
+            android:id="@+id/is_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:src="@drawable/creature_new_indicator" />
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#99000000"
+            android:ellipsize="end"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

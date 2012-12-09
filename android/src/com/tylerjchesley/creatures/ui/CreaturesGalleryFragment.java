@@ -12,10 +12,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -174,6 +171,10 @@ public class CreaturesGalleryFragment extends ContentFragment implements
     }
 
     public void setFilter(int filter) {
+        if (mFilter == filter) {
+            return;
+        }
+
         mFilter = filter;
         if (isAdded()) {
             setContentShown(false);
@@ -238,18 +239,41 @@ public class CreaturesGalleryFragment extends ContentFragment implements
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-            final ImageView view = new ImageView(mContext);
+            final View view = View.inflate(context, R.layout.list_item_creature, null);
+            final ViewHolder holder = new ViewHolder();
             view.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     mGridView.getColumnWidth()));
-            view.setScaleType(ImageView.ScaleType.CENTER);
+            holder.title = (TextView) view.findViewById(R.id.title);
+            holder.image = (ImageView) view.findViewById(R.id.image);
+            holder.favoriteIndicator = view.findViewById(R.id.is_favorite);
+            holder.newIndicator = view.findViewById(R.id.is_new);
+            view.setTag(holder);
             return view;
         }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            final ViewHolder holder = (ViewHolder) view.getTag();
             mImageFetcher.loadImage(cursor.getString(Creature.IMAGE_INDEX),
-                    (ImageView) view, R.drawable.background_leopard_skin);
+                    holder.image, R.drawable.creature_image_placeholder);
+            holder.title.setText(cursor.getString(Creature.TITLE_INDEX));
+            holder.favoriteIndicator.setVisibility(
+                    cursor.getInt(Creature.IS_FAVORITE_INDEX) == 1 ? View.VISIBLE : View.GONE);
+            holder.newIndicator.setVisibility(
+                    cursor.getInt(Creature.IS_NEW_INDEX) == 1 ? View.VISIBLE : View.GONE);
         }
+
+    }
+
+    static final class ViewHolder {
+
+        TextView title;
+
+        ImageView image;
+
+        View favoriteIndicator;
+
+        View newIndicator;
 
     }
 
