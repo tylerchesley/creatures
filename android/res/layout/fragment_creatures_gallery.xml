@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:drawSelectorOnTop="true"
+            android:padding="1dip"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit" />
 

@@ -254,8 +254,8 @@ public class CreaturesGalleryFragment extends ContentFragment implements
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             final ViewHolder holder = (ViewHolder) view.getTag();
-            mImageFetcher.loadImage(cursor.getString(Creature.IMAGE_INDEX),
-                    holder.image, R.drawable.creature_image_placeholder);
+            mImageFetcher.loadThumbnailImage(cursor.getString(Creature.IMAGE_INDEX),
+                    holder.image);
             holder.title.setText(cursor.getString(Creature.TITLE_INDEX));
             holder.favoriteIndicator.setVisibility(
                     cursor.getInt(Creature.IS_FAVORITE_INDEX) == 1 ? View.VISIBLE : View.GONE);
