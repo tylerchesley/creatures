@@ -5,14 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.SearchView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -21,26 +22,13 @@ import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
 import com.tylerjchesley.creatures.ui.widget.CreatureThumbnailImageView;
 import com.tylerjchesley.creatures.util.UiUtils;
-import xxx.tylerchesley.android.app.ContentFragment;
 import xxx.tylerchesley.android.util.ImageFetcher;
 
 /**
  * Author: Tyler Chesley
  */
-public class CreaturesGalleryFragment extends ContentFragment implements
-        LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
-
-//------------------------------------------
-//  Constants
-//------------------------------------------
-
-    private static final String SELECTED_FILTER = "selected_filter";
-
-    public static final int FILTER_ALL = 0;
-
-    public static final int FILTER_NEW = 1;
-
-    public static final int FILTER_FAVORITES = 2;
+public class CreaturesGalleryFragment extends CreaturesFragment implements
+        AbsListView.OnScrollListener {
 
 //------------------------------------------
 //  Interfaces
@@ -48,15 +36,13 @@ public class CreaturesGalleryFragment extends ContentFragment implements
 
     public static interface OnCreatureSelectedListener {
 
-        void onCreatureSelected(long id, Bundle creature);
+        void onCreatureSelected(int position, int filter);
 
     }
 
 //------------------------------------------
 //  Variables
 //------------------------------------------
-
-    private int mFilter = FILTER_ALL;
 
     private ImageFetcher mImageFetcher;
 
@@ -72,8 +58,7 @@ public class CreaturesGalleryFragment extends ContentFragment implements
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
             final Cursor cursor = mAdapter.getCursor();
             if (cursor.moveToPosition(position)) {
-                mCreatureSelectedListener.onCreatureSelected(id,
-                        Creature.buildArgumentsFromCursor(cursor));
+                mCreatureSelectedListener.onCreatureSelected(position, getFilter());
             }
         }
 
@@ -97,10 +82,6 @@ public class CreaturesGalleryFragment extends ContentFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mFilter = savedInstanceState.getInt(SELECTED_FILTER, FILTER_ALL);
-        }
 
         mImageFetcher = UiUtils.getImageFetcher(getActivity());
         mImageFetcher.setImageFadeIn(false);
@@ -136,19 +117,6 @@ public class CreaturesGalleryFragment extends ContentFragment implements
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(SELECTED_FILTER, mFilter);
-    }
-
-    @Override
     public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_creatures_gallery, container, false);
         final View emptyView = view.findViewById(R.id.empty);
@@ -172,40 +140,12 @@ public class CreaturesGalleryFragment extends ContentFragment implements
 //  Methods
 //------------------------------------------
 
-    public int getFilter() {
-        return mFilter;
-    }
-
-    public void setFilter(int filter) {
-        if (mFilter == filter) {
-            return;
-        }
-
-        mFilter = filter;
-        if (isAdded()) {
-            setContentShown(false);
-            getLoaderManager().restartLoader(0, null, this);
-        }
-    }
-
     private void onNewSelected() {
         final Intent intent = new Intent(Intent.ACTION_INSERT, Creatures.CONTENT_URI);
         startActivity(intent);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        String selection = null;
-        if (mFilter == FILTER_NEW) {
-            selection = Creatures.IS_NEW + " = 1";
-        }
-        else if (mFilter == FILTER_FAVORITES) {
-            selection = Creatures.IS_FAVORITE + " = 1";
-        }
-
-        return new CursorLoader(getActivity(), Creatures.CONTENT_URI,
-                Creature.CONTENT_PROJECTION, selection, null, Creatures.CREATED_AT + " DESC");
-    }
+    /**---- LoaderCallbacks ----**/
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -217,6 +157,8 @@ public class CreaturesGalleryFragment extends ContentFragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
+
+    /**---- OnScrollListener ----**/
 
     @Override
     public void onScrollStateChanged(AbsListView listView, int scrollState) {

@@ -72,7 +72,7 @@ public class CreaturesHelper {
         handler.startUpdate(0, null, Creatures.buildCreatureUri(creatureId), values, null, null);
     }
 
-    public static void setCreateIsNew(Context context, long creatureId, boolean isNew) {
+    public static void setCreatureIsNew(Context context, long creatureId, boolean isNew) {
         final ContentValues values = new ContentValues();
         values.put(Creature.IS_NEW, isNew);
         final AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};

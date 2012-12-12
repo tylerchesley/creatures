@@ -2,6 +2,7 @@ package com.tylerjchesley.creatures.ui;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,13 +17,22 @@ import com.actionbarsherlock.view.MenuItem;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.util.CreaturesHelper;
-import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.util.ImageFetcher;
 
 /**
  * Author: Tyler Chesley
  */
 public class CreatureFragment extends SherlockFragment {
+
+//------------------------------------------
+//  Static Methods
+//------------------------------------------
+
+    public static CreatureFragment newInstance(Cursor cursor) {
+        final CreatureFragment fragment = new CreatureFragment();
+        fragment.setArguments(Creature.buildArgumentsFromCursor(cursor));
+        return fragment;
+    }
 
 //------------------------------------------
 //  Variables
@@ -44,12 +54,11 @@ public class CreatureFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mImageFetcher = CreaturesViewPagerFragment.getImageFetcher(getActivity());
+
         mCreature = Creature.restoreCreature(getArguments());
 
-        CreaturesHelper.setCreateIsNew(getActivity(), mCreature.getId(), false);
-
-        mImageFetcher = UiUtils.getImageFetcher(getActivity());
-        mImageFetcher.setImageFadeIn(true);
+        CreaturesHelper.setCreatureIsNew(getActivity(), mCreature.getId(), false);
 
         setRetainInstance(true);
         setHasOptionsMenu(true);
@@ -59,7 +68,6 @@ public class CreatureFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getActivity().setTitle(mCreature.getTitle());
         mImageFetcher.loadImage(mCreature.getImage(), mImage);
     }
 
