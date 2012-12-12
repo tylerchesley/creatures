@@ -5,18 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-            android:id="@+id/progress"
+    <include
+            layout="@layout/generic_progress_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-        <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/progressBarStyleLarge" />
-
-    </LinearLayout>
+            android:layout_height="match_parent" />
 
     <ImageView
             android:id="@+id/image"

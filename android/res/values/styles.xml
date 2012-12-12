@@ -1,43 +1,61 @@
 <resources>
 
-    <!-- Root styles that vary by API level -->
-    <style name="FrameworkRoot.Theme" parent="Theme.Sherlock">
-        <!-- API 11+ (compatibility) -->
-        <!--<item name="buttonBarStyle">@style/Compat.ButtonBar</item>-->
-        <!--<item name="buttonBarButtonStyle">@style/Compat.ButtonBarButton</item>-->
-        <!--<item name="indeterminateProgressStyle">@style/Compat.IndeterminateProgress</item>-->
-        <!-- API 14+ (compatibility) -->
-        <!--<item name="listPreferredItemPaddingLeft">@dimen/compat_list_preferred_item_padding_left</item>-->
-        <!--<item name="listPreferredItemPaddingRight">@dimen/compat_list_preferred_item_padding_right</item>-->
-        <!--<item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>-->
+    <style name="Creatures" />
+
+    <!-- Action bar -->
+
+    <style name="Creatures.ActionBar" parent="FrameworkRoot.ActionBar">
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="android:titleTextStyle">@style/Creatures.ActionBar.TitleText</item>
+        <item name="titleTextStyle">@style/Creatures.ActionBar.TitleText</item>
     </style>
 
-    <style name="FrameworkRoot.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse" />
-    <style name="FrameworkRoot.ActionBar.TitleText" parent="TextAppearance.Sherlock.Widget.ActionBar.Title.Inverse" />
-
-    <style name="Theme.Base" parent="FrameworkRoot.Theme">
+    <style name="Creatures.ActionBar.TitleText" parent="FrameworkRoot.ActionBar.TitleText">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <!-- Base themes for the app -->
-    <style name="Theme.Creatures" parent="Theme.Base">
-        <item name="android:windowBackground">@color/background_grey</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-        <item name="android:actionDropDownStyle">@style/SpinnerAppTheme.DropDown</item>
-        <item name="actionDropDownStyle">@style/SpinnerAppTheme.DropDown</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListViewAppTheme</item>
-        <item name="dropDownListViewStyle">@style/DropDownListViewAppTheme</item>
-        <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="windowContentOverlay">@drawable/actionbar_shadow</item>
+    <!-- Components -->
 
-        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
+    <style name="Creatures.EditText" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text_holo_dark</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="Creatures.Spinner" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_holo_dark</item>
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_dark</item>
         <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
-
-        <item name="selectableItemBackground">@drawable/item_background_holo_dark</item>
-        <item name="android:selectableItemBackground">@drawable/item_background_holo_dark</item>
     </style>
 
-    <style name="FormTitle" parent="android:style/TextAppearance.Medium">
+    <style name="Creatures.Spinner.DropDown">
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <style name="Creatures.SpinnerDropDownItem" parent="android:Widget.DropDownItem.Spinner">
+        <item name="android:checkMark">@drawable/btn_radio_holo_dark</item>
+    </style>
+
+    <style name="Creatures.DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
+        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="Creatures.ListView" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
+    </style>
+
+    <style name="Creatures.ListView.White" parent="android:Widget.ListView.White">
+        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
+    </style>
+
+    <style name="Creatures.SpinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <!-- Generic Styles -->
+
+    <style name="Creatures.FormLabel" parent="android:style/TextAppearance.Medium">
         <item name="android:textAllCaps">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -49,52 +67,16 @@
         <item name="android:paddingLeft">8dip</item>
     </style>
 
-    <!-- Action bar -->
-    <style name="ActionBar" parent="FrameworkRoot.ActionBar">
-        <item name="android:background">@drawable/actionbar_background</item>
-        <item name="background">@drawable/actionbar_background</item>
-        <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
-        <item name="titleTextStyle">@style/ActionBar.TitleText</item>
-    </style>
-
-    <style name="ActionBar.TitleText" parent="FrameworkRoot.ActionBar.TitleText">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="EditTextAppTheme" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/edit_text_holo_dark</item>
-        <item name="android:textColor">#ffffff</item>
-    </style>
-
-    <style name="SpinnerAppTheme" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_holo_dark</item>
-        <item name="android:dropDownSelector">@drawable/list_selector_holo_dark</item>
-        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
-    </style>
-
-    <style name="SpinnerAppTheme.DropDown">
-        <item name="android:spinnerMode">dropdown</item>
-    </style>
-
-    <style name="SpinnerDropDownItemAppTheme" parent="android:Widget.DropDownItem.Spinner">
-        <item name="android:checkMark">@drawable/btn_radio_holo_dark</item>
-    </style>
-
-    <style name="DropDownListViewAppTheme" parent="@style/Widget.Sherlock.ListView.DropDown">
-        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="ListViewAppTheme" parent="android:Widget.ListView">
-        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
-    </style>
-
-    <style name="ListViewAppTheme.White" parent="android:Widget.ListView.White">
-        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
-    </style>
-
-    <style name="SpinnerItemAppTheme" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:textColor">#ffffff</item>
+    <style name="Creatures.ButtonBar" parent="@android:style/ButtonBar">
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:divider">@drawable/abs__list_divider_holo_dark</item>
+        <item name="divider">@drawable/abs__list_divider_holo_dark</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dividerPadding">12dip</item>
+        <item name="android:background">#555555</item>
     </style>
 
 </resources>

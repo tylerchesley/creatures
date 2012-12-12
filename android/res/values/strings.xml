@@ -48,6 +48,8 @@
     <string name="creature_save_success">Creature saved!!</string>
     <string name="creature_insert_failure">Unable to add creature</string>
     <string name="creature_insert_progress_message">Adding creature&#8230;</string>
-    <string name="creature_finding_image_progress_message">Finding image&#8230;</string>
+    <string name="creature_finding_image_progress_message">Finding creature&#8230;</string>
+    <string name="error_invalid_url">Enter a valid URL</string>
+    <string name="error_missing_title">Enter a title</string>
 
 </resources>

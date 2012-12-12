@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dip"
+                android:orientation="vertical">
+
+            <TextView
+                    style="@style/Creatures.FormLabel"
+                    android:text="@string/creature_title"/>
+
+            <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"/>
+
+            <TextView
+                    style="@style/Creatures.FormLabel"
+                    android:text="@string/creature_url"/>
+
+            <EditText
+                    android:id="@+id/url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:imeOptions="actionGo"
+                    android:singleLine="true"/>
+
+            <ImageView
+                    android:id="@+id/image"
+                    android:contentDescription="@string/creature_image_description"
+                    android:scaleType="fitCenter"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/creature_image_placeholder"
+                    android:layout_height="300dip"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <com.actionbarsherlock.internal.widget.IcsLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle">
+
+        <Button
+                android:id="@+id/cancel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_action_cancel"
+                android:text="@string/cancel"
+                style="?android:attr/borderlessButtonStyle" />
+
+        <Button
+                android:id="@+id/ok"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_action_accept"
+                android:text="@string/ok"
+                style="?android:attr/borderlessButtonStyle" />
+
+    </com.actionbarsherlock.internal.widget.IcsLinearLayout>
+
+</LinearLayout>

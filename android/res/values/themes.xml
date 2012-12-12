@@ -1,0 +1,58 @@
+<resources>
+
+    <!-- Root styles that vary by API level -->
+    <style name="FrameworkRoot.Theme" parent="Theme.Sherlock">
+        <!-- API 11+ (compatibility) -->
+        <!--<item name="buttonBarStyle">@style/Creatures.ButtonBar</item>-->
+        <!--<item name="buttonBarButtonStyle">@style/Compat.ButtonBarButton</item>-->
+        <!--<item name="indeterminateProgressStyle">@style/Compat.IndeterminateProgress</item>-->
+        <!-- API 14+ (compatibility) -->
+        <!--<item name="listPreferredItemPaddingLeft">@dimen/compat_list_preferred_item_padding_left</item>-->
+        <!--<item name="listPreferredItemPaddingRight">@dimen/compat_list_preferred_item_padding_right</item>-->
+        <!--<item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>-->
+    </style>
+
+    <style name="FrameworkRoot.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TitleText" parent="TextAppearance.Sherlock.Widget.ActionBar.Title.Inverse" />
+
+    <style name="Theme.Base" parent="FrameworkRoot.Theme">
+    </style>
+
+    <!-- Base themes for the app -->
+    <style name="Theme.Creatures" parent="Theme.Base">
+        <item name="android:windowBackground">@color/background_grey</item>
+
+        <item name="android:actionBarStyle">@style/Creatures.ActionBar</item>
+        <item name="actionBarStyle">@style/Creatures.ActionBar</item>
+
+        <item name="android:actionDropDownStyle">@style/Creatures.Spinner.DropDown</item>
+        <item name="actionDropDownStyle">@style/Creatures.Spinner.DropDown</item>
+
+        <item name="android:dropDownListViewStyle">@style/Creatures.DropDownListView</item>
+        <item name="dropDownListViewStyle">@style/Creatures.DropDownListView</item>
+
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="windowContentOverlay">@drawable/actionbar_shadow</item>
+
+        <item name="android:editTextStyle">@style/Creatures.EditText</item>
+        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
+
+        <item name="selectableItemBackground">@drawable/item_background_holo_dark</item>
+        <item name="android:selectableItemBackground">@drawable/item_background_holo_dark</item>
+
+        <item name="android:buttonBarStyle">@style/Creatures.ButtonBar</item>
+    </style>
+
+    <!-- Activity Specific Themes -->
+
+    <style name="Theme.Creatures.Home" parent="Theme.Creatures">
+        <item name="android:actionBarStyle">@style/Creatures.ActionBar.Home</item>
+        <item name="actionBarStyle">@style/Creatures.ActionBar.Home</item>
+    </style>
+
+    <style name="Creatures.ActionBar.Home" parent="style/Creatures.ActionBar">
+        <item name="android:displayOptions">showHome|useLogo|disableHome</item>
+        <item name="displayOptions">showHome|useLogo|disableHome</item>
+    </style>
+
+</resources>

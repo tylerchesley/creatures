@@ -19,9 +19,10 @@ import com.actionbarsherlock.view.MenuItem;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
+import com.tylerjchesley.creatures.ui.widget.CreatureThumbnailImageView;
+import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.app.ContentFragment;
 import xxx.tylerchesley.android.util.ImageFetcher;
-import xxx.tylerchesley.android.util.UIUtils;
 
 /**
  * Author: Tyler Chesley
@@ -101,7 +102,7 @@ public class CreaturesGalleryFragment extends ContentFragment implements
             mFilter = savedInstanceState.getInt(SELECTED_FILTER, FILTER_ALL);
         }
 
-        mImageFetcher = UIUtils.getImageFetcher(getActivity());
+        mImageFetcher = UiUtils.getImageFetcher(getActivity());
         mImageFetcher.setImageFadeIn(false);
 
         mAdapter = new CreaturesAdapter(getActivity());
@@ -239,41 +240,22 @@ public class CreaturesGalleryFragment extends ContentFragment implements
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-            final View view = View.inflate(context, R.layout.list_item_creature, null);
-            final ViewHolder holder = new ViewHolder();
-            view.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    mGridView.getColumnWidth()));
-            holder.title = (TextView) view.findViewById(R.id.title);
-            holder.image = (ImageView) view.findViewById(R.id.image);
-            holder.favoriteIndicator = view.findViewById(R.id.is_favorite);
-            holder.newIndicator = view.findViewById(R.id.is_new);
-            view.setTag(holder);
+            final int columnWidth = mGridView.getColumnWidth();
+            final CreatureThumbnailImageView view = new CreatureThumbnailImageView(context);
+            view.setLayoutParams(new GridView.LayoutParams(columnWidth,
+                    columnWidth));
             return view;
         }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            final ViewHolder holder = (ViewHolder) view.getTag();
-            mImageFetcher.loadThumbnailImage(cursor.getString(Creature.IMAGE_INDEX),
-                    holder.image);
-            holder.title.setText(cursor.getString(Creature.TITLE_INDEX));
-            holder.favoriteIndicator.setVisibility(
-                    cursor.getInt(Creature.IS_FAVORITE_INDEX) == 1 ? View.VISIBLE : View.GONE);
-            holder.newIndicator.setVisibility(
-                    cursor.getInt(Creature.IS_NEW_INDEX) == 1 ? View.VISIBLE : View.GONE);
+            final CreatureThumbnailImageView imageView = (CreatureThumbnailImageView) view;
+            mImageFetcher.setImageSize(mGridView.getColumnWidth());
+            mImageFetcher.loadImage(cursor.getString(Creature.IMAGE_INDEX),
+                    imageView);
+            imageView.setIsFavorite(cursor.getInt(Creature.IS_FAVORITE_INDEX) == 1);
+            imageView.setIsNew(cursor.getInt(Creature.IS_NEW_INDEX) == 1);
         }
-
-    }
-
-    static final class ViewHolder {
-
-        TextView title;
-
-        ImageView image;
-
-        View favoriteIndicator;
-
-        View newIndicator;
 
     }
 

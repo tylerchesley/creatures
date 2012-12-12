@@ -24,7 +24,7 @@ public class CreaturesActivity extends SinglePaneActivity implements
                 R.array.creatures_filter_options, R.layout.sherlock_spinner_item);
         adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getSupportActionBar().setListNavigationCallbacks(adapter, this);
         getSupportActionBar().setSelectedNavigationItem(

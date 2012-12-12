@@ -16,9 +16,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.util.CreaturesHelper;
-import xxx.tylerchesley.android.app.ContentFragment;
+import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.util.ImageFetcher;
-import xxx.tylerchesley.android.util.UIUtils;
 
 /**
  * Author: Tyler Chesley
@@ -49,7 +48,7 @@ public class CreatureFragment extends SherlockFragment {
 
         CreaturesHelper.setCreateIsNew(getActivity(), mCreature.getId(), false);
 
-        mImageFetcher = UIUtils.getImageFetcher(getActivity());
+        mImageFetcher = UiUtils.getImageFetcher(getActivity());
         mImageFetcher.setImageFadeIn(true);
 
         setRetainInstance(true);

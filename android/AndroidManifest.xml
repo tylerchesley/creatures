@@ -19,6 +19,7 @@
 
         <activity
                 android:name=".ui.CreaturesActivity"
+                android:theme="@style/Theme.Creatures.Home"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
