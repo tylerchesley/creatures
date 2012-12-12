@@ -115,6 +115,11 @@ public class CreaturesGalleryFragment extends ContentFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_creatures, menu);
+
+        final MenuItem item = menu.findItem(R.id.menu_search);
+        final SearchView searchView = new SearchView(getActivity());
+        searchView.setQueryHint(getString(R.string.hint_search));
+        item.setActionView(searchView);
     }
 
     @Override

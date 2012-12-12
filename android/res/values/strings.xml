@@ -11,6 +11,9 @@
 
     <!-- Creatures -->
 
+    <string name="description_search">Search</string>
+    <string name="hint_search">Search Creatures</string>
+
     <string-array name="creatures_filter_options">
         <item>All Creatures</item>
         <item>New Creatures</item>
