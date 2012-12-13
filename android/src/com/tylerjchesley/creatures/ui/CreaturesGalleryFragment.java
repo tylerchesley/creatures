@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,8 @@ import com.tylerjchesley.creatures.ui.widget.CreatureThumbnailImageView;
 import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.util.ImageFetcher;
 
+import java.util.ArrayList;
+
 /**
  * Author: Tyler Chesley
  */
@@ -38,6 +42,30 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
 
         void onCreatureSelected(int position, int filter);
 
+    }
+
+    private static void logData(Cursor cursor) {
+        final ArrayList<String> items = new ArrayList<String>(cursor.getCount());
+
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+
+        while (!cursor.isAfterLast()) {
+            final ArrayList<String> item = new ArrayList<String>();
+            item.add(cursor.getString(Creature.TITLE_INDEX));
+            item.add(cursor.getString(Creature.URL_INDEX));
+            item.add(cursor.getString(Creature.IMAGE_INDEX));
+            item.add(cursor.getString(Creature.IS_NEW_INDEX));
+            item.add(cursor.getString(Creature.IS_FAVORITE_INDEX));
+            item.add(cursor.getString(Creature.CREATED_AT_INDEX));
+            items.add('"' + TextUtils.join("~", item) + '"');
+
+            cursor.moveToNext();
+        }
+
+        final String s = TextUtils.join(",\n", items);
+        Log.d("XXXXXXXXX", s);
     }
 
 //------------------------------------------
@@ -148,6 +176,7 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        logData(cursor);
         mAdapter.swapCursor(cursor);
         setContentShown(true);
     }

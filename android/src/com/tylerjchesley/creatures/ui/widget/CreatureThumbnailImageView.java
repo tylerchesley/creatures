@@ -29,9 +29,6 @@ public class CreatureThumbnailImageView extends ImageView {
 
         final Resources resources = getResources();
 
-        final float scale = getResources().getDisplayMetrics().density;
-        final int padding = (int) (1 * scale + 0.5f);
-
         mIsNewDrawable = (BitmapDrawable) resources.getDrawable(R.drawable.creature_new_indicator);
         mIsNewDrawable.setBounds(0, 0,
                 mIsNewDrawable.getIntrinsicWidth(),
@@ -40,8 +37,6 @@ public class CreatureThumbnailImageView extends ImageView {
         mIsFavoriteDrawable.setBounds(0, 0,
                 mIsFavoriteDrawable.getIntrinsicWidth(),
                 mIsFavoriteDrawable.getIntrinsicHeight());
-
-        setPadding(padding, padding, padding, padding);
 
         setScaleType(ScaleType.CENTER_CROP);
     }

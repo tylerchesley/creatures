@@ -47,7 +47,7 @@
                     android:contentDescription="@string/creature_image_description"
                     android:scaleType="fitCenter"
                     android:layout_width="match_parent"
-                    android:src="@drawable/creature_image_placeholder"
+                    android:src="@drawable/creature_thumbnail_placeholder"
                     android:layout_height="300dip"/>
 
         </LinearLayout>

@@ -45,6 +45,8 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 
     public static final int IS_FAVORITE_INDEX = 5;
 
+    public static final int CREATED_AT_INDEX = 6;
+
 //------------------------------------------
 //  Static Methods
 //------------------------------------------
