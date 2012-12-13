@@ -84,7 +84,6 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
         super.onCreate(savedInstanceState);
 
         mImageFetcher = UiUtils.getImageFetcher(getActivity());
-        mImageFetcher.setImageFadeIn(false);
 
         mAdapter = new CreaturesAdapter(getActivity());
 
@@ -199,7 +198,7 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
             final CreatureThumbnailImageView imageView = (CreatureThumbnailImageView) view;
             mImageFetcher.setImageSize(mGridView.getColumnWidth());
             mImageFetcher.loadImage(cursor.getString(Creature.IMAGE_INDEX),
-                    imageView);
+                    imageView, R.drawable.creature_thumbnail_placeholder);
             imageView.setIsFavorite(cursor.getInt(Creature.IS_FAVORITE_INDEX) == 1);
             imageView.setIsNew(cursor.getInt(Creature.IS_NEW_INDEX) == 1);
         }

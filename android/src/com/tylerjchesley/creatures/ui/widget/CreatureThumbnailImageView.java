@@ -41,8 +41,6 @@ public class CreatureThumbnailImageView extends ImageView {
                 mIsFavoriteDrawable.getIntrinsicWidth(),
                 mIsFavoriteDrawable.getIntrinsicHeight());
 
-        setBackgroundResource(R.drawable.creature_image_placeholder);
-
         setPadding(padding, padding, padding, padding);
 
         setScaleType(ScaleType.CENTER_CROP);
