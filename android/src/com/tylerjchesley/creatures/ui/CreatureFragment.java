@@ -58,8 +58,6 @@ public class CreatureFragment extends SherlockFragment {
 
         mCreature = Creature.restoreCreature(getArguments());
 
-        CreaturesHelper.setCreatureIsNew(getActivity(), mCreature.getId(), false);
-
         setRetainInstance(true);
         setHasOptionsMenu(true);
     }

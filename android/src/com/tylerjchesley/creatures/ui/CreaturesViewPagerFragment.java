@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.tylerjchesley.creatures.R;
+import com.tylerjchesley.creatures.model.Creature;
+import com.tylerjchesley.creatures.util.CreaturesHelper;
 import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.util.ImageFetcher;
 import xxx.tylerchesley.android.view.CursorFragmentStatePagerAdapter;
@@ -48,6 +50,21 @@ public class CreaturesViewPagerFragment extends CreaturesFragment {
 
     private boolean mShouldSetPosition = true;
 
+    private final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            setCreatureNotNew(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
+    };
+
 //------------------------------------------
 //  Overridden Methods
 //------------------------------------------
@@ -70,6 +87,7 @@ public class CreaturesViewPagerFragment extends CreaturesFragment {
     @Override
     public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mPager = new ViewPager(getActivity());
+        mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setId(R.id.pager);
         mPager.setAdapter(mAdapter);
         return mPager;
@@ -86,6 +104,16 @@ public class CreaturesViewPagerFragment extends CreaturesFragment {
 //  Methods
 //------------------------------------------
 
+    private void setCreatureNotNew(int position) {
+        final Cursor cursor = mAdapter.getCursor();
+        if (cursor.moveToPosition(position)) {
+            if (cursor.getInt(Creature.IS_NEW_INDEX) == 1) {
+                CreaturesHelper.setCreatureIsNew(getActivity(),
+                        cursor.getLong(Creature._ID_INDEX), false);
+            }
+        }
+    }
+
     /**---- LoaderCallbacks ----**/
 
     @Override
@@ -93,6 +121,7 @@ public class CreaturesViewPagerFragment extends CreaturesFragment {
         mAdapter.swapCursor(cursor);
         if (mShouldSetPosition) {
             mPager.setCurrentItem(mSelectedPosition, false);
+            setCreatureNotNew(mSelectedPosition);
             mShouldSetPosition = false;
         }
         setContentShown(true);
