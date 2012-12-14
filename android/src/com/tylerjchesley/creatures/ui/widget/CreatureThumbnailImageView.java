@@ -6,17 +6,20 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
+import android.graphics.drawable.StateListDrawable;
 import com.tylerjchesley.creatures.R;
+import xxx.tylerchesley.android.widget.CheckableImageView;
 
 /**
  * Author: Tyler Chesley
  */
-public class CreatureThumbnailImageView extends ImageView {
+public class CreatureThumbnailImageView extends CheckableImageView {
 
     private final BitmapDrawable mIsNewDrawable;
 
     private final BitmapDrawable mIsFavoriteDrawable;
+
+    private final StateListDrawable mCheckableDrawable;
 
     private boolean mIsFavorite = false;
 
@@ -38,6 +41,8 @@ public class CreatureThumbnailImageView extends ImageView {
                 mIsFavoriteDrawable.getIntrinsicWidth(),
                 mIsFavoriteDrawable.getIntrinsicHeight());
 
+        mCheckableDrawable = (StateListDrawable) resources.getDrawable(R.drawable.activated_background_holo_dark);
+
         setScaleType(ScaleType.CENTER_CROP);
     }
 
@@ -52,6 +57,10 @@ public class CreatureThumbnailImageView extends ImageView {
         if (mIsNew) {
             mIsNewDrawable.draw(canvas);
         }
+
+        mCheckableDrawable.setState(getDrawableState());
+        mCheckableDrawable.setBounds(0, 0, getWidth(), getHeight());
+        mCheckableDrawable.draw(canvas);
     }
 
     @Override

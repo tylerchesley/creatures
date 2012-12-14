@@ -77,6 +77,17 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         return args;
     }
 
+    public static Creature restoreCreature(Cursor cursor) {
+        final Creature creature = new Creature();
+        creature.mId = cursor.getLong(_ID_INDEX);
+        creature.mTitle = cursor.getString(TITLE_INDEX);
+        creature.mUrl = cursor.getString(URL_INDEX);
+        creature.mImage = cursor.getString(IMAGE_INDEX);
+        creature.mIsNew = cursor.getInt(IS_NEW_INDEX) == 1;
+        creature.mIsFavorite = cursor.getInt(IS_FAVORITE_INDEX) == 1;
+        return creature; 
+    }
+    
     public static Creature restoreCreature(Bundle arguments) {
         final Creature creature = new Creature();
         creature.mId = arguments.getLong(_ID);

@@ -141,21 +141,11 @@ public class CreatureFragment extends SherlockFragment {
     private void onFavoriteSelected() {
         final boolean favorited = !mCreature.isFavorite();
         showFavorited(favorited);
-        Toast.makeText(getActivity(), favorited ?
-                R.string.toast_favorited : R.string.toast_unfavorited,
-                Toast.LENGTH_SHORT).show();
         CreaturesHelper.setCreatureFavorited(getActivity(), mCreature.getId(), favorited);
     }
 
     private void onWebsiteSelected() {
-        final String url = getArguments().getString(Creature.URL);
-        try {
-            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), R.string.error_unable_open_url,
-                    Toast.LENGTH_SHORT).show();
-        }
+        CreaturesHelper.openCreatureWebsite(getActivity(), mCreature.getUrl());
     }
 
     private void onEditSelected() {

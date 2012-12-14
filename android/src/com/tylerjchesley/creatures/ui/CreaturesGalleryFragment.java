@@ -16,6 +16,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SearchView;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -23,6 +25,7 @@ import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
 import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
 import com.tylerjchesley.creatures.ui.widget.CreatureThumbnailImageView;
+import com.tylerjchesley.creatures.util.CreaturesHelper;
 import com.tylerjchesley.creatures.util.UiUtils;
 import xxx.tylerchesley.android.util.ImageFetcher;
 
@@ -72,6 +75,12 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
 //  Variables
 //------------------------------------------
 
+    private Creature mLongClickedCreature;
+
+    private View mLongClickedView;
+
+    private ActionMode mActionMode;
+
     private ImageFetcher mImageFetcher;
 
     private GridView mGridView;
@@ -87,6 +96,92 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
             final Cursor cursor = mAdapter.getCursor();
             if (cursor.moveToPosition(position)) {
                 mCreatureSelectedListener.onCreatureSelected(position, getFilter());
+            }
+        }
+
+    };
+
+    private final AdapterView.OnItemLongClickListener mOnLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+            // Called when the user long-clicks on someView
+            if (mActionMode != null) {
+                return false;
+            }
+
+            final Cursor cursor = mAdapter.getCursor();
+            if (!cursor.moveToPosition(position)) {
+                return false;
+            }
+
+            mLongClickedCreature = Creature.restoreCreature(cursor);
+            mLongClickedView = view;
+            mLongClickedView.setActivated(true);
+            // Start the CAB using the ActionMode.Callback defined above
+            mActionMode = ((SherlockFragmentActivity) getActivity()).startActionMode(mActionModeCallback);
+            return true;
+        }
+    };
+
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            final MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_creature, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (mLongClickedCreature == null) {
+                return false;
+            }
+
+            switch (item.getItemId()) {
+                case R.id.menu_favorite:
+                    CreaturesHelper.setCreatureFavorited(getActivity(),
+                            mLongClickedCreature.getId(), !mLongClickedCreature.isFavorite());
+                    mode.finish();
+                    return true;
+
+                case R.id.menu_share:
+                    CreaturesHelper.shareCreature(getActivity(),
+                            mLongClickedCreature.getTitle(), mLongClickedCreature.getUrl());
+                    mode.finish();
+                    return true;
+
+                case R.id.menu_website:
+                    CreaturesHelper.openCreatureWebsite(getActivity(), mLongClickedCreature.getUrl());
+                    mode.finish();
+                    return true;
+
+                case R.id.menu_edit:
+                    return true;
+
+                case R.id.menu_delete:
+                    CreaturesHelper.maybeDeleteCreature(getActivity(), mLongClickedCreature.getId());
+                    mode.finish();
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            mLongClickedCreature = null;
+
+            if (mLongClickedView != null) {
+                mLongClickedView.setActivated(false);
+                mLongClickedView = null;
             }
         }
 
@@ -152,6 +247,7 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
         mGridView.setOnScrollListener(this);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(mOnClickListener);
+        mGridView.setOnItemLongClickListener(mOnLongClickListener);
         return view;
     }
 
@@ -176,7 +272,7 @@ public class CreaturesGalleryFragment extends CreaturesFragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        logData(cursor);
+//        logData(cursor);
         mAdapter.swapCursor(cursor);
         setContentShown(true);
     }

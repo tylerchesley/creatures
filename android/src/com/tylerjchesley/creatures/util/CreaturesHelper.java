@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.widget.Toast;
@@ -65,11 +66,24 @@ public class CreaturesHelper {
                 activity.getString(R.string.title_share)));
     }
 
+    public static void openCreatureWebsite(Activity activity, String url) {
+        try {
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(activity, R.string.error_unable_open_url,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public static void setCreatureFavorited(Context context, long creatureId, boolean favorited) {
         final ContentValues values = new ContentValues();
         values.put(Creature.IS_FAVORITE, favorited);
         final AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};
         handler.startUpdate(0, null, Creatures.buildCreatureUri(creatureId), values, null, null);
+        Toast.makeText(context, favorited ?
+                R.string.toast_favorited : R.string.toast_unfavorited,
+                Toast.LENGTH_SHORT).show();
     }
 
     public static void setCreatureIsNew(Context context, long creatureId, boolean isNew) {
