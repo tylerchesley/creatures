@@ -1,15 +1,12 @@
 package com.tylerjchesley.creatures.ui;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -149,7 +146,7 @@ public class CreatureFragment extends SherlockFragment {
     }
 
     private void onEditSelected() {
-
+        startActivity(new Intent(Intent.ACTION_EDIT, mCreature.toUri()));
     }
 
     private void onDeleteSelected() {

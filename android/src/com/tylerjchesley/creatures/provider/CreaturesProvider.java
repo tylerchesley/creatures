@@ -1,23 +1,16 @@
 package com.tylerjchesley.creatures.provider;
 
-import android.database.sqlite.SQLiteDatabase;
-import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
-
-import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.UriMatcher;
-import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
+import xxx.tylerchesley.android.content.BaseContentProvider;
 import xxx.tylerchesley.android.util.SelectionBuilder;
-
-import java.util.Arrays;
-
-import static xxx.tylerchesley.android.util.LogUtils.LOGV;
 
 /**
  * Author: Tyler Chesley
  */
-public class CreaturesProvider extends ContentProvider {
+public class CreaturesProvider extends BaseContentProvider {
 
 //------------------------------------------
 //  Constants
@@ -54,7 +47,21 @@ public class CreaturesProvider extends ContentProvider {
 //  Methods
 //------------------------------------------
 
-    private SelectionBuilder buildSimpleSelection(Uri uri) {
+    /**---- ContentProvider ----**/
+
+    @Override
+    public boolean onCreate() {
+        mOpenHelper = new CreaturesDatabase(getContext());
+        return true;
+    }
+
+    @Override
+    protected SQLiteOpenHelper getOpenHelper() {
+        return mOpenHelper;
+    }
+
+    @Override
+    protected SelectionBuilder buildSelection(Uri uri) {
         final int match = sMatcher.match(uri);
         final SelectionBuilder builder = new SelectionBuilder();
         switch (match) {
@@ -67,24 +74,6 @@ public class CreaturesProvider extends ContentProvider {
                 break;
         }
         return builder;
-    }
-
-    /**---- ContentProvider ----**/
-
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new CreaturesDatabase(getContext());
-        return true;
-    }
-
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String order) {
-        LOGV(TAG, "query(uri=" + uri + ", proj=" + Arrays.toString(projection) + ")");
-        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        final SelectionBuilder builder = buildSimpleSelection(uri);
-        final Cursor cursor = builder.where(selection, selectionArgs).query(db, projection, order);
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return cursor;
     }
 
     @Override
@@ -100,40 +89,6 @@ public class CreaturesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        final int match = sMatcher.match(uri);
-        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
-        switch (match) {
-            case CREATURES: {
-                final long id = database.insertOrThrow(Creatures.PATH, null, values);
-                getContext().getContentResolver().notifyChange(uri, null, true);
-                return Creatures.buildCreatureUri(id);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        LOGV(TAG, "delete(uri=" + uri + ")");
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final SelectionBuilder builder = buildSimpleSelection(uri);
-        int retVal = builder.where(selection, selectionArgs).delete(db);
-        getContext().getContentResolver().notifyChange(uri, null, true);
-        return retVal;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        LOGV(TAG, "update(uri=" + uri + ", values=" + values.toString() + ")");
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final SelectionBuilder builder = buildSimpleSelection(uri);
-        int retVal = builder.where(selection, selectionArgs).update(db, values);
-        getContext().getContentResolver().notifyChange(uri, null, true);
-        return retVal;
     }
 
 }

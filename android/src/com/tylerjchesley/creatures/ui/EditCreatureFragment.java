@@ -1,9 +1,12 @@
 package com.tylerjchesley.creatures.ui;
 
 import android.content.*;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -18,13 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.tylerjchesley.creatures.R;
 import com.tylerjchesley.creatures.model.Creature;
-import com.tylerjchesley.creatures.provider.CreaturesContract;
 import com.tylerjchesley.creatures.util.UiUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import xxx.tylerchesley.android.app.ContentFragment;
+import xxx.tylerchesley.android.app.EditRecordFragment;
 import xxx.tylerchesley.android.app.GenericProgressDialogFragment;
 import xxx.tylerchesley.android.util.ImageFetcher;
 import xxx.tylerchesley.android.util.UIUtils;
@@ -34,7 +36,7 @@ import java.io.IOException;
 /**
  * Author: Tyler Chesley
  */
-public class EditCreatureFragment extends ContentFragment {
+public class EditCreatureFragment extends EditRecordFragment<Creature> {
 
 //------------------------------------------
 //  Static Methods
@@ -63,8 +65,6 @@ public class EditCreatureFragment extends ContentFragment {
 //  Variables
 //------------------------------------------
 
-    private Creature mCreature = new Creature();
-
     private ImageFetcher mImageFetcher;
 
     /**---- Views ----**/
@@ -89,7 +89,6 @@ public class EditCreatureFragment extends ContentFragment {
 //------------------------------------------
 //  Overridden Methods
 //------------------------------------------
-
 
     @Override
     public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -121,18 +120,19 @@ public class EditCreatureFragment extends ContentFragment {
         super.onActivityCreated(savedInstanceState);
 
         final Bundle arguments = getArguments();
+        final Creature creature = getRecord();
 
         final String action = arguments.getString(UIUtils._ACTION);
         if (Intent.ACTION_SEND.equals(action)) {
             final String title = arguments.getString(Intent.EXTRA_SUBJECT);
             final String url = arguments.getString(Intent.EXTRA_TEXT);
 
-            mCreature.setTitle(title);
-            mCreature.setUrl(url);
+            creature.setTitle(title);
+            creature.setUrl(url);
 
             mUrl.setEnabled(false);
 
-            bindView();
+            bindView(getRecord());
         }
         else if (Intent.ACTION_INSERT.equals(action)) {
             if (UIUtils.hasHoneycomb()) {
@@ -144,11 +144,11 @@ public class EditCreatureFragment extends ContentFragment {
                     final ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
                     final CharSequence pasteData = item.getText();
                     if (pasteData != null && isValidHttpUrl(pasteData)) {
-                        mCreature.setUrl(pasteData.toString());
+                        creature.setUrl(pasteData.toString());
                     }
                 }
             }
-            bindView();
+            bindView(getRecord());
         }
     }
 
@@ -162,9 +162,51 @@ public class EditCreatureFragment extends ContentFragment {
         setRetainInstance(true);
     }
 
+    @Override
+    protected void onRecordSaved() {
+        Toast.makeText(getActivity(),
+                R.string.creature_save_success, Toast.LENGTH_SHORT).show();
+        getActivity().finish();
+    }
+
 //------------------------------------------
 //  Methods
 //------------------------------------------
+
+    @Override
+    protected void bindRecord(Creature record) {
+        record.setTitle(mTitle.getText().toString());
+        record.setUrl(mUrl.getText().toString());
+    }
+
+    @Override
+    protected void bindView(Creature record) {
+        mTitle.setText(record.getTitle());
+        mUrl.setText(record.getUrl());
+        if (!TextUtils.isEmpty(record.getImage())) {
+            mImageFetcher.loadImage(record.getImage(), mImage);
+        }
+        else if (!TextUtils.isEmpty(record.getUrl())) {
+            findImage();
+        }
+    }
+
+    @Override
+    protected Creature onCreateRecord(Uri uri) {
+        return new Creature();
+    }
+
+    @Override
+    protected boolean isValid() {
+        boolean valid = isTitleValid();
+        return isUrlValid() && valid;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(getActivity(), getUri(),
+                Creature.CONTENT_PROJECTION, null, null, null);
+    }
 
     private void onCancelSelected() {
         getActivity().finish();
@@ -172,20 +214,12 @@ public class EditCreatureFragment extends ContentFragment {
 
     private void onOkSelected() {
         final boolean isValid = isValid();
-        if (isValid && TextUtils.isEmpty(mCreature.getImage())) {
+        if (isValid && TextUtils.isEmpty(getRecord().getImage())) {
             findImage();
         }
-        else if (isValid) {
-            final CreatureQueryHandler handler = new CreatureQueryHandler(
-                    getActivity().getContentResolver());
-            handler.startInsert(0, null, CreaturesContract.Creatures.CONTENT_URI,
-                    mCreature.toValues());
+        else {
+            startRecordSave();
         }
-    }
-
-    private boolean isValid() {
-        boolean valid = isTitleValid();
-        return isUrlValid() && valid;
     }
 
     private boolean isUrlValid() {
@@ -216,30 +250,12 @@ public class EditCreatureFragment extends ContentFragment {
         }
 
         if (isImage(url)) {
-            mCreature.setImage(url);
-            bindView();
+            getRecord().setImage(url);
+            bindView(getRecord());
         }
         else {
             new ScrapePageTask().execute(url);
         }
-    }
-
-    private void onCreatureSaved() {
-        Toast.makeText(getActivity(),
-                R.string.creature_save_success, Toast.LENGTH_SHORT).show();
-        getActivity().finish();
-    }
-
-    private void bindView() {
-        mTitle.setText(mCreature.getTitle());
-        mUrl.setText(mCreature.getUrl());
-        if (!TextUtils.isEmpty(mCreature.getImage())) {
-            mImageFetcher.loadImage(mCreature.getImage(), mImage);
-        }
-        else if (!TextUtils.isEmpty(mCreature.getUrl())) {
-            findImage();
-        }
-        setContentShown(true);
     }
 
 //------------------------------------------
@@ -259,7 +275,7 @@ public class EditCreatureFragment extends ContentFragment {
             GenericProgressDialogFragment.dismiss(getFragmentManager());
 
             if (success) {
-                bindView();
+                bindView(getRecord());
             }
             else {
                 Toast.makeText(getActivity(),
@@ -271,6 +287,7 @@ public class EditCreatureFragment extends ContentFragment {
         @Override
         protected Boolean doInBackground(String... urls) {
             final String url = urls[0];
+            final Creature creature = getRecord();
 
             if (TextUtils.isEmpty(url)) {
                 return false;
@@ -283,11 +300,11 @@ public class EditCreatureFragment extends ContentFragment {
                 if (element != null) {
                     final String imageUrl = element.attr("href");
                     if (isImage(imageUrl)) {
-                        if (TextUtils.isEmpty(mCreature.getTitle())) {
-                            mCreature.setTitle(document.title());
+                        if (TextUtils.isEmpty(creature.getTitle())) {
+                            creature.setTitle(document.title());
                         }
 
-                        mCreature.setImage(imageUrl);
+                        creature.setImage(imageUrl);
                         return true;
                     }
                 }
@@ -300,25 +317,5 @@ public class EditCreatureFragment extends ContentFragment {
         }
 
     }
-
-    final class CreatureQueryHandler extends AsyncQueryHandler {
-
-        public CreatureQueryHandler(ContentResolver cr) {
-            super(cr);
-        }
-
-        @Override
-        protected void onUpdateComplete(int token, Object cookie, int result) {
-            onCreatureSaved();
-        }
-
-        @Override
-        protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            onCreatureSaved();
-        }
-
-    }
-
-
 
 }

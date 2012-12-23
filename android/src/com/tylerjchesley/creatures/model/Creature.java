@@ -2,26 +2,21 @@ package com.tylerjchesley.creatures.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import com.google.api.services.fusiontables.Fusiontables;
-import com.google.api.services.fusiontables.model.Sqlresponse;
-import com.tylerjchesley.creatures.provider.CreaturesContract;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.tylerjchesley.creatures.provider.CreaturesContract.Creatures;
+import com.tylerjchesley.creatures.provider.CreaturesContract.CreaturesColumns;
+import xxx.tylerchesley.android.record.RecordBase;
 
 /**
  * Author: Tyler Chesley
  */
-public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns {
+public class Creature extends RecordBase implements CreaturesColumns, BaseColumns {
 
 //------------------------------------------
 //  Constants
 //------------------------------------------
-
-    public static final String CREATURES_TABLE_ID = "1976sLRAlK8q0ktrCHYXMtWL4XzTQQ0elilqkDtg";
 
     public static final String[] CONTENT_PROJECTION = {
             _ID,
@@ -51,21 +46,6 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 //  Static Methods
 //------------------------------------------
 
-    public static List<Creature> all(Fusiontables client) throws IOException{
-        final Sqlresponse response = client.query().sql("SELECT " + TITLE + ", "
-                + URL + ", " + IMAGE + " FROM " + CREATURES_TABLE_ID).execute();
-        final List<List<Object>> rows = response.getRows();
-        final List<Creature> creatures = new ArrayList<Creature>(rows.size());
-
-        for (List<Object> row : rows) {
-            final String title = (String) row.get(0);
-            final String url = (String) row.get(1);
-            creatures.add(new Creature(title, url));
-        }
-
-        return creatures;
-    }
-
     public static Bundle buildArgumentsFromCursor(Cursor cursor) {
         final Bundle args = new Bundle();
         args.putLong(_ID, cursor.getLong(_ID_INDEX));
@@ -79,22 +59,22 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 
     public static Creature restoreCreature(Cursor cursor) {
         final Creature creature = new Creature();
-        creature.mId = cursor.getLong(_ID_INDEX);
+        creature.setId(cursor.getLong(_ID_INDEX));
         creature.mTitle = cursor.getString(TITLE_INDEX);
         creature.mUrl = cursor.getString(URL_INDEX);
         creature.mImage = cursor.getString(IMAGE_INDEX);
-        creature.mIsNew = cursor.getInt(IS_NEW_INDEX) == 1;
+        creature.mIsCreatureNew = cursor.getInt(IS_NEW_INDEX) == 1;
         creature.mIsFavorite = cursor.getInt(IS_FAVORITE_INDEX) == 1;
         return creature; 
     }
     
     public static Creature restoreCreature(Bundle arguments) {
         final Creature creature = new Creature();
-        creature.mId = arguments.getLong(_ID);
+        creature.setId(arguments.getLong(_ID));
         creature.mTitle = arguments.getString(TITLE);
         creature.mUrl = arguments.getString(URL);
         creature.mImage = arguments.getString(IMAGE);
-        creature.mIsNew = arguments.getBoolean(IS_NEW);
+        creature.mIsCreatureNew = arguments.getBoolean(IS_NEW);
         creature.mIsFavorite = arguments.getBoolean(IS_FAVORITE);
         return creature;
     }
@@ -103,15 +83,13 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 //  Variables
 //------------------------------------------
 
-    private long mId;
-
     private String mTitle;
 
     private String mUrl;
 
     private String mImage;
 
-    private boolean mIsNew;
+    private boolean mIsCreatureNew;
 
     private boolean mIsFavorite;
 
@@ -133,14 +111,6 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 //------------------------------------------
 //  Methods:Properties
 //------------------------------------------
-
-    public long getId() {
-        return mId;
-    }
-
-    public void setId(long id) {
-        mId = id;
-    }
 
     public String getTitle() {
         return mTitle;
@@ -166,12 +136,12 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
         mImage = image;
     }
 
-    public boolean isNew() {
-        return mIsNew;
+    public boolean isCreatureNew() {
+        return mIsCreatureNew;
     }
 
     public void setIsNew(boolean isNew) {
-        mIsNew = isNew;
+        mIsCreatureNew = isNew;
     }
 
     public boolean isFavorite() {
@@ -186,31 +156,30 @@ public class Creature implements CreaturesContract.CreaturesColumns, BaseColumns
 //  Methods
 //------------------------------------------
 
-    public Bundle toArguments() {
-        final Bundle arguments = new Bundle(2);
-        arguments.putString(TITLE, mTitle);
-        arguments.putString(URL, mUrl);
-        arguments.putString(IMAGE, mImage);
-        return arguments;
+    @Override
+    public void restore(Cursor cursor) {
+        mTitle = cursor.getString(TITLE_INDEX);
+        mUrl = cursor.getString(URL_INDEX);
+        mImage = cursor.getString(IMAGE_INDEX);
+        mIsCreatureNew = cursor.getInt(IS_NEW_INDEX) == 1;
+        mIsFavorite = cursor.getInt(IS_FAVORITE_INDEX) == 1;
     }
 
+    @Override
+    public Uri toUri() {
+        return isNew() ? Creatures.CONTENT_URI : Creatures.buildCreatureUri(getId());
+    }
+
+    @Override
     public ContentValues toValues() {
         final ContentValues values = new ContentValues(3);
         values.put(TITLE, mTitle);
         values.put(URL, mUrl);
         values.put(IMAGE, mImage);
-        values.put(CREATED_AT, System.currentTimeMillis());
+        if (isNew()) {
+            values.put(CREATED_AT, System.currentTimeMillis());
+        }
         return values;
-    }
-
-    public void insert(Fusiontables client) throws IOException {
-        client.query().sql("INSERT INTO " + CREATURES_TABLE_ID +
-                " (" + TITLE + ", "
-                + URL  + ", "
-                + IMAGE + ") VALUES ('"
-                + mTitle + "', '"
-                + mUrl + "', '"
-                + mImage + "')").execute();
     }
 
 }
